@@ -1,0 +1,37 @@
+{
+  "name": "merge-split-webpage",
+  "version": "1.0.0",
+  "description": "Merge/split webpage testing project",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davikawasaki/merge-split-webpage.git"
+  },
+  "author": "Davi Kawasaki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davikawasaki/merge-split-webpage/issues"
+  },
+  "homepage": "\\\\145.218.248.62\\filesvcs-01$\\Custom\\DK\\DK.AirSeaHorsens\\XpExportHorsens\\Arbejdsark\\ScriptsLibrary\\applications\\mergepdf",
+  "dependencies": {
+    "@material-ui/core": "latest",
+    "pdf-lib": "^0.6.1",
+    "prop-types": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-files": "^2.4.8",
+    "react-scripts": "latest",
+    "save-file": "^2.3.1"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
