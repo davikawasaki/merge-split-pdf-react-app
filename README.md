@@ -20,3 +20,7 @@ $ npm i
 $ npm run start
 $ npm run build
 ```
+
+## Demo application
+
+https://davikawasaki.github.io/pdfoffline/

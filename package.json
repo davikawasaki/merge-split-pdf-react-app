@@ -1,7 +1,7 @@
 {
-  "name": "merge-split-webpage",
+  "name": "merge-split-pdf-react-app",
   "version": "1.0.0",
-  "description": "Merge/split webpage testing project",
+  "description": "Merge & Split PDF React Application",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/davikawasaki/merge-split-webpage.git"
+    "url": "git+https://github.com/davikawasaki/merge-split-pdf-react-app.git"
   },
   "author": "Davi Kawasaki",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/davikawasaki/merge-split-webpage/issues"
+    "url": "https://github.com/davikawasaki/merge-split-pdf-react-app/issues"
   },
-  "homepage": "\\\\145.218.248.62\\filesvcs-01$\\Custom\\DK\\DK.AirSeaHorsens\\XpExportHorsens\\Arbejdsark\\ScriptsLibrary\\applications\\mergepdf",
+  "homepage": "https://davikawasaki.github.io/pdfoffline/",
   "dependencies": {
     "@material-ui/core": "latest",
     "pdf-lib": "^0.6.1",
