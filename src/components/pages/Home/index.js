@@ -7,70 +7,18 @@ import AppBar from '@material-ui/core/AppBar';
 // import CardActions from '@material-ui/core/CardActions';
 // import CardContent from '@material-ui/core/CardContent';
 // import CardMedia from '@material-ui/core/CardMedia';
-import CssBaseline from '@material-ui/core/CssBaseline';
 // import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import withRoot from '../withRoot';
-import FilesDragDrop from '../components/FilesDragDrop';
+import {withStyles} from '@material-ui/core/styles';
+import FilesDragDrop from '../../organism/FilesDragDrop';
 
-const styles = theme => ({
-  appBar: {
-    position: 'relative',
-  },
-  icon: {
-    marginRight: theme.spacing.unit * 2,
-  },
-  heroUnit: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  heroContent: {
-    maxWidth: 600,
-    margin: '0 auto',
-    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
-  },
-  heroButtons: {
-    marginTop: theme.spacing.unit * 4,
-  },
-  layout: {
-    width: 'auto',
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
-      width: 1100,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  },
-  cardGrid: {
-    padding: `${theme.spacing.unit * 8}px 0`,
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  cardMedia: {
-    paddingTop: '56.25%', // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing.unit * 6,
-  },
-});
-
-// const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
-function Index(props) {
+const Home = props => {
   const { classes } = props;
 
   return (
-    <React.Fragment>
-      <CssBaseline />
+    <>
+
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
@@ -146,12 +94,62 @@ function Index(props) {
         // </footer>
       }
       {/* End footer */}
-    </React.Fragment>
+    </>
   );
-}
+};
 
-Index.propTypes = {
+Home.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withRoot(withStyles(styles)(Index));
+
+const styles = theme => ({
+    appBar: {
+        position: 'relative',
+    },
+    icon: {
+        marginRight: theme.spacing.unit * 2,
+    },
+    heroUnit: {
+        backgroundColor: theme.palette.background.paper,
+    },
+    heroContent: {
+        maxWidth: 600,
+        margin: '0 auto',
+        padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
+    },
+    heroButtons: {
+        marginTop: theme.spacing.unit * 4,
+    },
+    layout: {
+        width: 'auto',
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+        [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
+            width: 1100,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+        },
+    },
+    cardGrid: {
+        padding: `${theme.spacing.unit * 8}px 0`,
+    },
+    card: {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    cardMedia: {
+        paddingTop: '56.25%', // 16:9
+    },
+    cardContent: {
+        flexGrow: 1,
+    },
+    footer: {
+        backgroundColor: theme.palette.background.paper,
+        padding: theme.spacing.unit * 6,
+    },
+});
+
+
+export default withStyles(styles)(Home);
