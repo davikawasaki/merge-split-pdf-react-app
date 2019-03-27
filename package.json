@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/davikawasaki/merge-split-pdf-react-app/issues"
   },
-  "homepage": "https://davikawasaki.github.io/pdfoffline/",
+  "homepage": "\\\\145.218.248.62\\filesvcs-01$\\Custom\\DK\\DK.AirSeaHorsens\\XpExportHorsens\\Arbejdsark\\ScriptsLibrary\\applications\\mergepdf",
   "dependencies": {
     "@material-ui/core": "latest",
     "pdf-lib": "^0.6.1",

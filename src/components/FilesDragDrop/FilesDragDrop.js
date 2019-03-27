@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 // import withRoot from '../../withRoot';
+import ModalLoadingAlert from '../ModalLoadingAlert';
 import Files from 'react-files';
 import PDFService from '../../services/PDFService';
 import { saveSync } from 'save-file'
@@ -33,26 +34,23 @@ const styles = theme => ({
 });
 
 class FilesDragDrop extends React.Component {
-  constructor (props) {
-      super(props)
-      this.state = {
-          files: [],
-		  hasFiles: false
-      }
-	  this.classes = props.classes
+  state = {
+	  files: [],
+	  hasFiles: false,
+	  modalOpen: false,
+	  modalLoading: false,
+	  modalMsg: {
+		  err: null,
+		  success: null
+	  }
   }
-
-  // state = {
-  //   files: [],
-	// hasFiles: false
-  // }
 
   onFilesChange = (files) => {
       this.setState({
           files,
 		  hasFiles: files.length > 0 ? true : false
       }, () => {
-          console.log(this.state)
+          // console.log(this.state)
       })
 
       // this.setState({value: event.target.value}, function () {
@@ -61,11 +59,24 @@ class FilesDragDrop extends React.Component {
   }
 
   onFilesError = (error, file) => {
-      console.log('error code ' + error.code + ': ' + error.message)
+      console.log('[LOG] Error code ' + error.code + ': ' + error.message)
   }
 
   filesRemoveOne = (file) => {
-      this.state.files.removeFile(file)
+      this.refs.files.removeFile(file)
+  }
+
+  filesClearAndRemoveAll = () => {
+      this.setState({
+		  modalOpen: false,
+		  modalLoading: false,
+		  modalMsg: {
+			  err: null,
+			  success: null
+		  }
+      }, () => {
+		  this.filesRemoveAll()
+      })
   }
 
   filesRemoveAll = () => {
@@ -73,37 +84,91 @@ class FilesDragDrop extends React.Component {
           files: [],
 		  hasFiles: false
       }, () => {
-          console.log(this.state)
+		  this.refs.files.removeFiles()
       })
   }
 
   startMerge = () => {
+	  let tempMsg
 	  this.setState({
           files: this.state.files,
-		  hasFiles: false
+		  hasFiles: false,
+		  modalOpen: true,
+		  modalLoading: true
       }, () => {
-          console.log("Starting merge...")
+		  // this.refs.modal.handleOpen()
+          console.log("[LOG] Starting merge...")
       })
 
 	  PDFService.mergeBetweenPDF(this.state.files)
 	  	.then((res) => {
 			// console.log(res)
-			const fileName = "output_merge_" + new Date().toISOString().replace(":","_").replace("T","_").replace("Z","") + ".pdf"
-			saveSync(res, fileName)
-			console.log("Merge successfull and downloaded!")
-			// FileSaver.saveAs(res, 'foo.pdf')
+			if (res && res.hasOwnProperty("pdfFile")) {
+				if (res.pdfFile) {
+					if (res.pdfNotMergedList.length !== this.state.files.length) {
+						const fileName = "output_merge_" + new Date().toISOString().replace(":","_").replace("T","_").replace("Z","") + ".pdf"
+						saveSync(res.pdfFile, fileName)
+					}
+
+					if (res.pdfNotMergedList.length > 0) {
+						if (res.pdfNotMergedList.length > 0 && res.pdfNotMergedList.length === this.state.files.length) {
+							tempMsg = "No merge PDF output could be done. Following files have problem and need to be merged manually: " + res.pdfNotMergedList.join(", ")
+						} else {
+							tempMsg = "Following files have problem and need to be merged manually: " + res.pdfNotMergedList.join(", ")
+						}
+
+						console.log("[LOG] " + tempMsg)
+						this.setState({
+					  		modalOpen: true,
+					  		modalLoading: false,
+							modalMsg: {
+								err: tempMsg,
+								success: null
+							}
+				        }, () => { console.log("[LOG] Modal closed.") })
+					}
+					else {
+						tempMsg = "Merge totally successfull and downloaded!"
+						console.log("[LOG] " + tempMsg)
+						this.setState({
+					  		modalOpen: true,
+					  		modalLoading: false,
+							modalMsg: {
+								err: null,
+								success: tempMsg
+							}
+				        }, () => { console.log("[LOG] Closed modal") })
+					}
+				}
+			} else {
+				tempMsg = "Internal error at merging! Send this error to the developer in charge."
+				console.log(tempMsg)
+				this.setState({
+					modalOpen: true,
+					modalLoading: false,
+					modalMsg: {
+						err: tempMsg,
+						success: null
+					}
+				}, () => { console.log("[LOG] Closed modal") })
+			}
 		})
-		.catch((err) => console.log(err))
+		.catch((err) => {
+			console.log("[LOG] " + err)
+		})
 		.finally(() => this.filesRemoveAll())
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
       <div className="files">
         <Grid container spacing={32} justify="center">
-          <Grid item className={this.classes.dropFilesGridZone}>
+          <Grid item className={classes.dropFilesGridZone}>
             <Files
-              className={this.classes.dropFilesZone}
+			  ref='files'
+              className={classes.dropFilesZone}
               onChange={this.onFilesChange}
               onError={this.onFilesError}
               accepts={['.pdf']}
@@ -113,7 +178,7 @@ class FilesDragDrop extends React.Component {
               minFileSize={0}
               clickable
             >
-              <div className={this.classes.dropFilesZoneDiv}>Drop files here or click to upload</div>
+              <div className={classes.dropFilesZoneDiv}>Drop files here or click to upload</div>
             </Files>
           </Grid>
         </Grid>
@@ -122,7 +187,7 @@ class FilesDragDrop extends React.Component {
           {
             this.state.files.length > 0
             ?
-			<Grid item className={this.classes.dropFilesGridZone}>
+			<Grid item className={classes.dropFilesGridZone}>
 				<div className='files-list'>
 	              <ul>{this.state.files.map((file) =>
 	                <li className='files-list-item' key={file.id}>
@@ -140,7 +205,7 @@ class FilesDragDrop extends React.Component {
 	            </div>
 			</Grid>
             :
-			<Grid item className={this.classes.dropFilesWarningGridZone}>
+			<Grid item className={classes.dropFilesWarningGridZone}>
 				<div className='files-list'>
 	            	No files selected!
 	            </div>
@@ -157,11 +222,17 @@ class FilesDragDrop extends React.Component {
 				</Button>
 	        </Grid>
 			<Grid item>
-				<Button variant="outlined" color="secondary" onClick={this.filesRemoveAll}>
+				<Button variant="outlined" color="secondary" onClick={this.filesClearAndRemoveAll}>
 				  	Clear selection
 				</Button>
 			</Grid>
         </Grid>
+
+		<ModalLoadingAlert
+			isOpen={this.state.modalOpen}
+			isLoading={this.state.modalLoading}
+			msg={this.state.modalMsg}
+			clearModalStatus={this.filesClearAndRemoveAll} />
       </div>
     );
   }
