@@ -1,7 +1,7 @@
 import { PDFDocumentFactory, PDFDocumentWriter } from 'pdf-lib';
 
 function mergeBetweenPDF(pdfFileList) {
-	let returnObj = { pdfFile: null, pdfNotMergedList: [] }
+let returnObj = { pdfFile: null, pdfNotMergedList: [] }
 
     if (pdfFileList.length > 0) {
 		const reader = new FileReader();
