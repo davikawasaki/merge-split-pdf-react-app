@@ -1,6 +1,6 @@
 # Merge & Split PDF React App
 
-Simple ReactJS serveless application that merges and splits PDFs.
+Simple ReactJS serverless application that merges and splits PDFs.
 
 ## Dependencies
 
@@ -20,6 +20,12 @@ $ npm i
 $ npm run start
 $ npm run build
 ```
+
+## ToDo
+
+- PDF manipulation when metatags are not found (e.g. PDF 1.3 versions)
+- Enable to select which pages from a specific file to merge
+- Split feature
 
 ## Demo application
 
